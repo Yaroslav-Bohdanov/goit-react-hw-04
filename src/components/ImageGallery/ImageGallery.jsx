@@ -1,13 +1,14 @@
 import ImageGalleryCard from "../ImageGalleryCard/ImageGalleryCard";
-import Form from "../Form/Form";
+import s from "./ImageGallery.module.css";
 import { useEffect, useRef } from "react";
+
 const ImageGallery = ({ pictures, openModal }) => {
   const galleryRef = useRef(null);
 
   useEffect(() => {
     if (galleryRef.current) {
       const lastItem = galleryRef.current.lastElementChild;
-      const height = lastItem.getBoundingClientRect().height;
+      const height = lastItem?.getBoundingClientRect().height || 0;
 
       if (pictures.length > 12) {
         window.scrollBy({
@@ -19,17 +20,15 @@ const ImageGallery = ({ pictures, openModal }) => {
   }, [pictures]);
 
   return (
-    <Form ref={galleryRef}>
-      {pictures.map((picture) => {
-        return (
-          <ImageGalleryCard
-            openModal={openModal}
-            key={picture.id}
-            picture={picture}
-          />
-        );
-      })}
-    </Form>
+    <ul ref={galleryRef} className={s.gallery}>
+      {pictures.map((picture) => (
+        <ImageGalleryCard
+          key={picture.id}
+          picture={picture}
+          openModal={openModal}
+        />
+      ))}
+    </ul>
   );
 };
 
